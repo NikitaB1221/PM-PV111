@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace App
 {
-    internal class StringHelper
+    public class StringHelper
     {
         public String Ellipsis(String input, bool isDotsCounts, int maxLength = 80)
         {
@@ -19,9 +19,9 @@ namespace App
 
                 return input.Substring(0, maxLength - 3) + "...";
             }
-            return $"{input[..maxLength]}...";
+            return $"{input[0..maxLength]}...";
         }
-        static string UrlCombine(params string[] parts)
+        public String UrlCombine(params string[] parts)
         {
             if (parts == null || parts.Length == 0)
             {
