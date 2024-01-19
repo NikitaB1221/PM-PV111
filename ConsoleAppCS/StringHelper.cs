@@ -8,14 +8,14 @@ namespace App
 {
     public class StringHelper
     {
-        public String Ellipsis(String input, bool isDotsCounts, int maxLength = 80)
+        public String Ellipsis(String input, bool isDotsCounts = true, int maxLength = 80)
         {
+            if (String.IsNullOrEmpty(input)) throw new ArgumentNullException("input must be not null or empty");
+
+            if (input.Length <= maxLength) return input;
+
             if (isDotsCounts)
             {
-                if (string.IsNullOrEmpty(input) || input.Length <= maxLength)
-                {
-                    return input;
-                }
 
                 return input.Substring(0, maxLength - 3) + "...";
             }
@@ -43,6 +43,18 @@ namespace App
             catch (Exception ex)
             {
                 throw new ArgumentException($"Path mapping error: {ex.Message}");
+            }
+        }
+
+        public string Spacefy(double number)
+        {
+            if (number % 1 == 0 || number < 0 && (number * -1) % 1 == 0)
+            {
+                return ((long)number).ToString("N0").Replace("\u00A0", " ");
+            }
+            else
+            {
+                return number.ToString("N10", System.Globalization.CultureInfo.InvariantCulture).Replace("\u00A0", " ").Replace(",", " ").TrimEnd('0');
             }
         }
     }
