@@ -21,28 +21,37 @@ namespace App
             }
             return $"{input[0..maxLength]}...";
         }
+
         public string UrlCombine(params string[] parts)
         {
             if (parts == null || parts.Length == 0)
             {
                 throw new ArgumentException("Empty path parts");
             }
-
-            try
+            if (parts.Any(part => !string.IsNullOrWhiteSpace(part)))
             {
+                bool hasNonEmptyPart = false;
                 for (int i = 0; i < parts.Length; i++)
                 {
-                    parts[i] = parts[i]?.Trim('/');
+                    parts[i] = parts[i]?.Trim('\\', ' ', '/');
+                    if (!string.IsNullOrWhiteSpace(parts[i]))
+                    {
+                        hasNonEmptyPart = true;
+                    }
                 }
-                string combinedPath = Path.Combine(parts);
-                combinedPath = combinedPath.Replace('\\', '/');
+                parts = parts.Where(part => !string.IsNullOrWhiteSpace(part)).ToArray();
+                if (!hasNonEmptyPart && parts.Length > 0)
+                {
+                    throw new ArgumentException("Empty parts are allowed only if there are no non-empty parts");
+                }
+                string combinedPath = string.Join("/", parts);
                 combinedPath = $"/{combinedPath.TrimStart('/')}";
 
                 return combinedPath;
             }
-            catch (Exception ex)
+            else
             {
-                throw new ArgumentException($"Path mapping error: {ex.Message}");
+                throw new ArgumentException("All path parts are null or empty");
             }
         }
 
