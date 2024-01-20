@@ -21,6 +21,8 @@ namespace AppTest
         {
             StringHelper stringHelper = new StringHelper();
             Assert.IsNotNull(stringHelper, "New StringHelper should be Non-Null");
+
+            // Basic cases
             Assert.AreEqual("/home/index", stringHelper.UrlCombine("/home/", "/index/"),
                 "UrlCombine('/home/', '/index/') should be '/home/index'");
             Assert.AreEqual("/home/index", stringHelper.UrlCombine("home", "index"),
@@ -31,6 +33,17 @@ namespace AppTest
                 "UrlCombine('/home', 'index') should be '/home/index'");
             Assert.AreEqual("/home/index", stringHelper.UrlCombine("home/", "index"),
                 "UrlCombine('home/', 'index') should be '/home/index'");
+
+            Assert.AreEqual("/home/index", stringHelper.UrlCombine("///home//", "//index///"),
+                "UrlCombine('///home//', '//index///') should be '/home/index'");
+            Assert.AreEqual("/home/index", stringHelper.UrlCombine("/home /", " / index "),
+                "UrlCombine('/home /', ' / index ') should be '/home/index'");
+            Assert.AreEqual("/home/index", stringHelper.UrlCombine("/home$%#", "#index@!"),
+                "UrlCombine('/home$%#', '#index@!') should be '/home/index'");
+            Assert.AreEqual("/home/index", stringHelper.UrlCombine("", "/home/index"),
+                "UrlCombine('', '/home/index') should be '/home/index'");
+            Assert.AreEqual("/home/index", stringHelper.UrlCombine("/home", ""),
+                "UrlCombine('/home', '') should be '/home/index'");
             //Assert.AreEqual("/home/index", stringHelper.UrlCombine("", ""),
             //    "UrlCombine('', '') should be '/home/index'");
         }

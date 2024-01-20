@@ -21,7 +21,7 @@ namespace App
             }
             return $"{input[0..maxLength]}...";
         }
-        public String UrlCombine(params string[] parts)
+        public string UrlCombine(params string[] parts)
         {
             if (parts == null || parts.Length == 0)
             {
@@ -34,11 +34,11 @@ namespace App
                 {
                     parts[i] = parts[i]?.Trim('/');
                 }
-
                 string combinedPath = Path.Combine(parts);
                 combinedPath = combinedPath.Replace('\\', '/');
+                combinedPath = $"/{combinedPath.TrimStart('/')}";
 
-                return $"/{combinedPath}";
+                return combinedPath;
             }
             catch (Exception ex)
             {
